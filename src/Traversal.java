@@ -1,5 +1,8 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 public class Traversal {
   public static void main(String[] args) {
@@ -15,14 +18,79 @@ public class Traversal {
     stringRoot.right.right = new TreeNode<String>("so", null, null);
     stringRoot.right.right.right = new TreeNode<String>("good", null, null);
 
+    TreeNode<Integer> megaRoot = new TreeNode<Integer>(1, null, null);
+    TreeNode<Integer> current = megaRoot;
 
+    for (int i = 2; i<=50000; i++) {
+      current.right = new TreeNode<Integer>(i, null, null);
+      current = current.right;
+    }
+
+    // preOrderIter(megaRoot);
+    levelOrder(stringRoot);
+    
+    // System.out.println("Preorder recursive");
+    // preorder(root);
+    // System.out.println("Preorder iterative");
+    // preOrderIter(root);
+
+    // preorder(megaRoot);
     // preorder(root);
     // postorder(root);
     // inorder(stringRoot);
     // printGreater(root, 1);
     // System.out.println(countNodes(root));
-    Map<String, Integer> counts = new HashMap<>();
-    System.out.println(toMap(stringRoot));
+    // Map<String, Integer> counts = new HashMap<>();
+    // System.out.println(toMap(stringRoot));
+  }
+
+  // Print a tree rooted at the given node in pre-order 
+  public static void preorder(TreeNode<?> node) {
+    // if null, return
+    if(node == null) {
+      return;
+    }
+    // print value
+    System.out.println(node.value);
+    // traverse left
+    preorder(node.left);
+    // traverse right
+    preorder(node.right);
+  }
+  
+  public static <T> void preOrderIter(TreeNode<T> node) {
+    Stack<TreeNode<T>> stack = new Stack<>();
+    
+    stack.push(node);
+
+    while (!stack.isEmpty()) {
+      TreeNode<T> current = stack.pop();
+
+      if (current == null) continue;
+
+      System.out.println(current.value);
+      stack.push(current.right);
+      stack.push(current.left);
+      
+    }
+  }
+
+  public static <T> void levelOrder(TreeNode<T> node) {
+    Queue<TreeNode<T>> stack = new LinkedList<>();
+    
+    stack.add(node);
+
+    while (!stack.isEmpty()) {
+      TreeNode<T> current = stack.poll();
+
+      if (current == null) continue;
+
+      System.out.println(current.value);
+      stack.add(current.left);
+      stack.add(current.right);
+      
+    }
+  
   }
 
   public static <T> Map<T, Integer> toMap(TreeNode<T> node){
@@ -62,19 +130,6 @@ public class Traversal {
     printGreater(node.right, threshold);
   }
 
-  // Print a tree rooted at the given node in pre-order 
-  public static void preorder(TreeNode<?> node) {
-    // if null, return
-    if(node == null) {
-      return;
-    }
-    // print value
-    System.out.println(node.value);
-    // traverse left
-    preorder(node.left);
-    // traverse right
-    preorder(node.right);
-  }
 
   public static void postorder(TreeNode<?> node){
     if (node == null) return;
